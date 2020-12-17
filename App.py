@@ -6,7 +6,7 @@ app = Flask(__name__)
 app.config['DEBUG'] = True
 app.config['TESTING'] = False
 app.config['MAIL_SERVER'] = '***********'
-app.config['MAIL_PORT'] = 587
+app.config['MAIL_PORT'] = ******
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
 #app.config['MAIL_DEBUG'] = True
@@ -22,7 +22,7 @@ mail = Mail(app)
 
 @app.route('/')
 def index():
-    msg = Message('Feedback/Collab Contact Request', recipients=[
+    msg = Message('******************', recipients=[
         '********************'])
     msg.html = '<b>Hello ********,<br>This is a test request from your contact form</b>'
     mail.send(msg)
