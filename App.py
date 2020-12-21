@@ -1,7 +1,9 @@
 from flask import Flask
+from flask_restful import Api, Resource
 from flask_mail import Mail, Message
 
 app = Flask(__name__)
+api = Api(app)
 
 app.config['DEBUG'] = True
 app.config['TESTING'] = False
@@ -20,15 +22,28 @@ app.config['MAIL_ASCII_ATTACHMENTS'] = False
 mail = Mail(app)
 
 
-@app.route('/')
-def index():
-    msg = Message('Feedback/Collab Contact Request', recipients=[
-        'shagasresthaa@gmail.com'])
-    msg.html = '<b>Hello Sresthaa,<br>This is a test request from your contact form</b>'
-    mail.send(msg)
+class home(Resource):
+    def get(self):
+        return{"status_code": "200", "response": "/home"}
 
-    return 'Message sent'
 
+class wake(Resource):
+    def get(self):
+        return{"status_code": "200", "Api_status": "Active"}
+
+
+class mailData(Resource):
+    def get(self, receipientAddr, subject, body):
+        msg = Message(subject, recipients=[receipientAddr])
+        msg.html = '<b>Hello,<br>' + body
+        mail.send(msg)
+        return{"status_code": "200", "response": "message sent"}
+
+
+api.add_resource(home, "/")
+api.add_resource(wake, "/wake")
+api.add_resource(
+    mailData, "/mailData/<string:receipientAddr>/<string:subject>/<string:body>")
 
 if __name__ == "__main__":
     app.run()
